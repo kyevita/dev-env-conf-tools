@@ -1,0 +1,2 @@
+# Dev Env Conf Tools
+- A personal tool written on rust to automatically backup your ZSH, nvim, and tmux configuraiton for both Mac and Linux computers. This tool will also restore the configuration with just one command on any new environment.
