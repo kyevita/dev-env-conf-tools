@@ -1,12 +1,20 @@
-use crate::{actions::action::{Action, ActionParams}, errors::action_error::ActionError};
+use crate::{actions::action::Action, errors::action_error::ActionError, cli::CLI};
 
-#[derive(Copy, Clone)]
-pub struct ActionManager {}
+#[derive(Clone, Copy)]
+pub struct ActionManager<'a> {
+  cli: &'a CLI
+}
 
-impl ActionManager {
-  pub fn verify_all(self, actions: &Vec<Box<dyn Action>>, params: &ActionParams) -> Result<(), ActionError> {
+impl<'a> ActionManager<'a> {
+  pub fn new(cli: &CLI) -> ActionManager<'_> {
+    ActionManager {
+      cli
+    }
+  }
+
+  pub fn verify_all(self, actions: &Vec<Box<dyn Action>>) -> Result<(), ActionError> {
     for action in actions.iter() {
-      match action.verification(params.clone()) {
+      match action.verification(self.cli) {
         Ok(_) => continue,
         Err(action_err) => return Err(action_err)
       };
@@ -15,9 +23,9 @@ impl ActionManager {
     return Ok(());
   }
 
-  pub fn execute_all(self, actions: &Vec<Box<dyn Action>>, params: &ActionParams) {
+  pub fn execute_all(self, actions: &Vec<Box<dyn Action>>) {
     for action in actions.iter() {
-      action.execute(params.clone());
+      action.execute(self.cli);
     } 
   }
 }

@@ -28,7 +28,7 @@ impl CLI {
     }
   }
 
-  pub fn read_line_until(&mut self, expected: &str, tries: Option<u32>) -> bool {
+  pub fn read_line_until(mut self, expected: &str, tries: Option<u32>) -> bool {
     let input = self.read_line().unwrap();
     let mut max_tries = 5;
     
