@@ -1,6 +1,6 @@
-use crate::{errors::action_error::ActionError, cli::CLI};
+use crate::{cli::CLI, errors::action_error::ActionError};
 
 pub trait Action {
-  fn verification(&self, cli: &CLI) -> Result<(), ActionError>;
-  fn execute(&self, cli: &CLI) -> ();
+    fn verification(&self, cli: &CLI) -> Result<(), ActionError>;
+    fn execute(&self, cli: &CLI) -> ();
 }
