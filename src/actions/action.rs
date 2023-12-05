@@ -1,6 +1,14 @@
-use crate::{cli::CLI, errors::action_error::ActionError};
+use std::any::type_name;
+
+use crate::{cli::CLI, config::Configuration, errors::action_error::ActionError};
 
 pub trait Action {
-    fn verification(&self, cli: &CLI) -> Result<(), ActionError>;
-    fn execute(&self, cli: &CLI) -> ();
+    fn execute(&self, cli: &CLI, app_config: Configuration) -> Result<(), ActionError>;
+    fn verification(&self, _cli: &CLI, _app_config: Configuration) -> Result<(), ActionError> {
+        Ok(())
+    }
+
+    fn get_action_name(&self) -> String {
+        return String::from(type_name::<Self>());
+    }
 }

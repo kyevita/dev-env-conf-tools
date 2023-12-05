@@ -1,7 +1,10 @@
 {
-  "rust-analyzer.linkedProjects": [
-    "./Cargo.toml",
-    "./Cargo.toml"
-  ],
-  "editor.formatOnSave": true,
+    "rust-analyzer.linkedProjects": [
+        "./Cargo.toml",
+        "./Cargo.toml"
+    ],
+    "editor.formatOnSave": true,
+    "editor.detectIndentation": false,
+    "editor.tabSize": 4,
+    "rust-analyzer.showUnlinkedFileNotification": false
 }

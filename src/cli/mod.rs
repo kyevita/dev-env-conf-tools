@@ -1,24 +1,11 @@
-use std::{
-    io::{self, Error},
-    path::PathBuf,
-};
-
-use home::home_dir;
+use std::io::{self, Error};
 
 #[derive(Debug, Copy, Clone)]
-pub struct CLI {
-    num_of_tries: u32,
-}
+pub struct CLI {}
 
 impl CLI {
     pub fn new() -> CLI {
-        return CLI { num_of_tries: 0 };
-    }
-    pub fn get_home_path(self) -> Result<PathBuf, &'static str> {
-        match home_dir() {
-            Some(path) => Ok(path),
-            None => Err("Unable to get home directory"),
-        }
+        return CLI {};
     }
 
     pub fn read_line(self) -> Result<String, Error> {
@@ -29,16 +16,23 @@ impl CLI {
         };
     }
 
-    pub fn read_line_until(mut self, expected: &str, tries: Option<u32>) -> bool {
+    pub fn read_line_until(
+        mut self,
+        expected: &str,
+        max_tries: Option<i32>,
+        start_at: Option<i32>,
+    ) -> bool {
         let input = self.read_line().unwrap();
-        let mut max_tries = 5;
+        let mut num_of_tries = match start_at {
+            Some(n) => n,
+            None => 0,
+        };
+        let mut tries: i32 = match max_tries {
+            Some(t) => t,
+            None => -1,
+        };
 
-        if !tries.is_none() {
-            max_tries = tries.unwrap();
-        }
-
-        if self.num_of_tries > max_tries {
-            self.num_of_tries = 0;
+        if num_of_tries > tries {
             return false;
         }
 
@@ -46,7 +40,7 @@ impl CLI {
             return true;
         }
 
-        self.num_of_tries += 1;
-        return self.read_line_until(expected, tries);
+        num_of_tries += 1;
+        return self.read_line_until(expected, Some(tries), Some(num_of_tries));
     }
 }
